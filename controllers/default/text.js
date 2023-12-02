@@ -3,13 +3,11 @@ import { getResponse } from "../OPENAI/apiCalls/getResponse.js";
 const handleTextPrompt = async (req, res) => {
   try {
     // console.log("1");
-    if (
-      !req.body ||
-      !req.body.prompt ||
-      !Array.isArray(req.body.prevMessages)
-    ) {
+    if (!req.body || !req.body.prompt || !req.body.prevMessages) {
       // console.log("err1");
       // If the required data is missing, throw a custom error
+      if (!Array.isArray(req.body.prevMessages))
+        console.log("i am cauing problem" + req.body.prevMessages);
       const error = new Error("Missing prompt in the request body");
       error.code = 401;
       throw error;
