@@ -2,34 +2,33 @@ import { getResponse } from "../OPENAI/apiCalls/getResponse.js";
 
 const handleTextPrompt = async (req, res) => {
   try {
-    // console.log("1");
-    if (!req.body || !req.body.prompt || !req.body.prevMessages) {
-      // console.log("err1");
-      // If the required data is missing, throw a custom error
-      if (!Array.isArray(req.body.prevMessages))
-        console.log("i am cauing problem" + req.body.prevMessages);
-      const error = new Error("Missing prompt in the request body");
-      error.code = 401;
-      throw error;
+    // Check if required data is present in the request body
+    if (!req.body || !req.body.prompt) {
+      const errorMessage = "Missing prompt in the request body";
+      console.error(errorMessage);
+      throw new Error(errorMessage);
     }
 
-    // Your existing logic
-    const prompt = req.body.prompt;
-    const prevMessages = [];
-    prevMessages.push(...prevMessages);
+    // Extract data from the request body
+    const { prompt, prevMessages: prevMessagesFromClient } = req.body;
+
+    // Ensure prevMessages is an array
+    const prevMessages = Array.isArray(prevMessagesFromClient) ? prevMessagesFromClient : [];
+    console.log("Prev Messages:", prevMessages);
+
+    // Call the external function to get the response
     const response = await getResponse(prompt, prevMessages);
-    // console.log("2");
+
     // Send a successful response
     return res.status(200).json({ aiResponse: response });
   } catch (error) {
-    console.log("err2");
+    console.error("Error:", error.message);
+
     // Handle the error gracefully
-    if (error.code >= 400 && error.code < 500) {
-      return res.status(400).json({ code: error.code, message: error.message });
-    } else {
-      // Send an error response
-      return res.status(500).json({ error: error.message });
-    }
+    const statusCode = error.code && error.code >= 400 && error.code < 500 ? error.code : 500;
+    const errorMessage = statusCode === 500 ? "Internal Server Error" : error.message;
+
+    return res.status(statusCode).json({ error: errorMessage });
   }
 };
 
