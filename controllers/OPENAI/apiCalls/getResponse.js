@@ -55,7 +55,7 @@ const promptOpenAI = async (model, prevMessages, prompt) => {
   // Use the openai npm library to create a completion using the request object
   const completion = await openai.chat.completions.create(request);
   const response = completion.choices[0].message.content;
-  console.log(response);
+  // console.log(response);
 
   // Return the response
   return response;
