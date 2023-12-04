@@ -1,7 +1,4 @@
-import { writeFile, readFile } from "fs/promises"; // Use fs.promises for Promise-based file operations
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import path from "path";
+import Feedback from "../../models/feedback.js";
 
 const handleFeedback = async (req, res) => {
   const { feedback } = req.body;
@@ -9,7 +6,7 @@ const handleFeedback = async (req, res) => {
     if (!feedback) {
       return res.status(400).json({ message: "feedback missing" });
     } else {
-      const saved = await saveFeedBack(feedback);
+      const saved = await saveFeedback(feedback);
       if (saved) {
         return res.status(200).json({ message: "feedback saved successfully" });
       } else {
@@ -23,29 +20,13 @@ const handleFeedback = async (req, res) => {
   }
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const saveFeedBack = async (feedback) => {
+const saveFeedback = async (feedback) => {
   try {
-    const feedbackFilePath = path.join(__dirname, "./feedbacks/feedbacks.json");
+    // Assuming your Feedback model has a schema similar to the one in the saveDeviceID example
+    // Create a new feedback record
+    await Feedback.create({ feedback });
 
-    // Read the existing feedbacks from the file
-    let existingFeedbacks = await readFile(feedbackFilePath, "utf-8");
-
-    // If the file is empty or null, initialize with an empty array
-    existingFeedbacks = existingFeedbacks ? JSON.parse(existingFeedbacks) : [];
-
-    // Add the new feedback to the array
-    existingFeedbacks.push(feedback);
-
-    // Write the updated feedback array back to the file
-    await writeFile(
-      feedbackFilePath,
-      JSON.stringify(existingFeedbacks, null, 2),
-      "utf-8"
-    );
-
+    console.log(`Feedback ${feedback} saved successfully.`);
     return true; // Indicate success
   } catch (error) {
     console.error("Error saving feedback:", error);

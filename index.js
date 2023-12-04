@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import defaultRoutes from "./routes/default.js";
@@ -15,6 +16,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const dbUri = process.env.dbUri;
 
 // Middleware
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -34,7 +36,17 @@ app.use("/analytics", analyticsRoutes);
 // Error Handling Middleware
 app.use(errorMiddleware);
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+try {
+  mongoose
+    .connect(dbUri)
+    .then(() => console.log("connected with mongodb"))
+    .catch((err) => console.log(err.message));
+} catch (error) {
+  console.log("mongoose connection error : " + error.message);
+}
+
+try {
+  app.listen(PORT, () => console.log(`server runing`));
+} catch (err) {
+  console.log("server connection err : " + err.message);
+}

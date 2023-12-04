@@ -1,15 +1,10 @@
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { readFile } from "fs/promises";
-import path from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import Device from "../../models/devices.js";
+import Feedback from "../../models/feedback.js";
 
 const handleAnalytics = async (req, res) => {
   try {
     const devices = await getDevices();
-    const feedbacks = await getFeedBacks();
+    const feedbacks = await getFeedbacks();
 
     const response = {
       devices: {
@@ -35,36 +30,24 @@ const handleAnalytics = async (req, res) => {
 
 const getDevices = async () => {
   try {
-    const devicesFilePath = path.join(
-      __dirname,
-      "../device/devices/devices.json"
-    );
-    const devicesData = await readFile(devicesFilePath, "utf-8");
+    // Fetch all devices from the Device collection
+    const devices = await Device.find({}).select("id");
 
-    if (!devicesData) {
-      return [];
-    }
-
-    return JSON.parse(devicesData);
+    // If no devices are found, return an empty array
+    return devices || [];
   } catch (error) {
     console.error("Error getting devices:", error);
     throw { code: 500, message: "Unable to fetch devices" };
   }
 };
 
-const getFeedBacks = async () => {
+const getFeedbacks = async () => {
   try {
-    const feedbacksFilePath = path.join(
-      __dirname,
-      "../feedback/feedbacks/feedbacks.json"
-    );
-    const feedbacksData = await readFile(feedbacksFilePath, "utf-8");
+    // Fetch all feedbacks from the Feedback collection
+    const feedbacks = await Feedback.find({}).select("feedback");
 
-    if (!feedbacksData) {
-      return [];
-    }
-
-    return JSON.parse(feedbacksData);
+    // If no feedbacks are found, return an empty array
+    return feedbacks || [];
   } catch (error) {
     console.error("Error getting feedbacks:", error);
     throw { code: 500, message: "Unable to fetch feedbacks" };

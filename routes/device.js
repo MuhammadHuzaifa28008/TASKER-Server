@@ -1,5 +1,5 @@
 import express from "express";
-import handleRegDevice from "../controllers/device/handleRegDevice.js";
+import handleRegDevice from "../controllers/device/device.js";
 
 const router = express.Router();
 
