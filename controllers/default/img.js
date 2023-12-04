@@ -20,11 +20,11 @@ const handleImgPrompt = async (req, res) => {
     // }
 
     // Generate a unique filename
-    const fileName = generateFileName();
+    // const fileName = generateFileName();
 
     // Save the image to the 'imgs' folder
-    const imagePath = path.join(__dirname, "../OCR/imgs/", fileName);
-    saveImage(encodedStr, imagePath);
+    // const imagePath = path.join(__dirname, "../OCR/imgs/", fileName);
+    // saveImage(encodedStr, imagePath);
 
     // Pass the file path to fetchTextFromImage
     // const fetchedTxt = await fetchTextFromImage(imagePath);
