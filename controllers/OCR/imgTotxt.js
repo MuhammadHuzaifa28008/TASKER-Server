@@ -1,42 +1,38 @@
 import { createWorker } from "tesseract.js";
 import fs from "fs/promises"; // Using fs.promises for asynchronous file operations
+import Jimp from "jimp";
 
-async function fetchTextFromImage(filePath) {
+export default async function fetchTextFromImage(base64Data) {
   const worker = await createWorker();
 
   try {
-    // You may load language and other configurations if needed
-    // await worker.load();
-    // await worker.loadLanguage("eng");
-    // await worker.initialize("eng");
+    // const jimpImage = await Jimp.read(Buffer.from(base64Data, 'base64'));
 
+    // // Determine the MIME type based on the image format
+    // const mimeType = jimpImage.getMIME();
+
+    // // Convert Jimp image to buffer
+    // const processedBuffer = await jimpImage.getBufferAsync(mimeType);
+
+    const processedBuffer = await Buffer.from(base64Data, "base64");
+    // Perform OCR on the processed buffer
     const {
-      data: { text, words, confidence },
-    } = await worker.recognize(filePath);
+      data: { text, confidence },
+    } = await worker.recognize(processedBuffer);
+
     if (confidence < 70) {
-      console.log("no meaningful text was found");
+      console.log("No meaningful text was found");
       const error = new Error("No meaningful text was found in image!");
       error.code = 402;
       throw error;
     } else {
-      console.log(confidence);
+      console.log(`Confidence: ${confidence}`);
       return text;
     }
   } catch (error) {
     console.error("Error during OCR:", error.message);
-    throw error; // Re-throw the error to handle it at a higher level if needed
+    throw error;
   } finally {
     await worker.terminate();
-
-    // Delete the processed file after OCR is complete
-    try {
-      await fs.unlink(filePath);
-      console.log("Processed file deleted successfully");
-    } catch (unlinkError) {
-      console.error("Error deleting processed file:", unlinkError);
-      // Handle the error or log it as needed
-    }
   }
 }
-
-export default fetchTextFromImage;
