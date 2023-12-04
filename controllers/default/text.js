@@ -14,7 +14,7 @@ const handleTextPrompt = async (req, res) => {
 
     // Ensure prevMessages is an array
     const prevMessages = Array.isArray(prevMessagesFromClient) ? prevMessagesFromClient : [];
-    console.log("Prev Messages:", prevMessages);
+    // console.log("Prev Messages:", prevMessages);
 
     // Call the external function to get the response
     const response = await getResponse(prompt, prevMessages);

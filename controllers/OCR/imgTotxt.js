@@ -21,7 +21,8 @@ export default async function fetchTextFromImage(base64Data) {
       data: { text, confidence },
     } = await worker.recognize(processedBuffer);
     
-    console.log(process.memoryUsage());
+    // console.log(process.memoryUsage());
+    console.log(confidence)
     if (confidence < 70) {
       console.log("No meaningful text was found");
       const error = new Error("No meaningful text was found in image!");
