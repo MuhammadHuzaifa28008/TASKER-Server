@@ -11,13 +11,13 @@ const __dirname = dirname(__filename);
 const handleImgPrompt = async (req, res) => {
   try {
     const { encodedStr } = req.body;
-
-    // Perform additional validation for image type if needed
-    if (!isImage(encodedStr)) {
-      const error = new Error("it is not base 64");
-      error.code = 401;
-      throw error;
-    }
+    if (!encodedStr) throw new Error({ code: 401, message: "no image " });
+    // // Perform additional validation for image type if needed
+    // if (!isImage(encodedStr)) {
+    //   const error = new Error("it is not base 64");
+    //   error.code = 401;
+    //   throw error;
+    // }
 
     // Generate a unique filename
     const fileName = generateFileName();
@@ -27,7 +27,8 @@ const handleImgPrompt = async (req, res) => {
     saveImage(encodedStr, imagePath);
 
     // Pass the file path to fetchTextFromImage
-    const fetchedTxt = await fetchTextFromImage(imagePath);
+    // const fetchedTxt = await fetchTextFromImage(imagePath);
+    const fetchedTxt = await fetchTextFromImage(encodedStr);
 
     // Respond with the fetched text and a success message
     return res
