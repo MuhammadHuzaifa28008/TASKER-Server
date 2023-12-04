@@ -6,9 +6,8 @@ export default async function fetchTextFromImage(base64Data) {
   const worker = await createWorker();
 
   try {
-    
     // const jimpImage = await Jimp.read(Buffer.from(base64Data, 'base64'));
-    
+
     // // Determine the MIME type based on the image format
     // const mimeType = jimpImage.getMIME();
 
@@ -20,10 +19,10 @@ export default async function fetchTextFromImage(base64Data) {
     const {
       data: { text, confidence },
     } = await worker.recognize(processedBuffer);
-    
+
     // console.log(process.memoryUsage());
-    console.log(confidence)
-    if (confidence < 70) {
+    console.log(confidence);
+    if (confidence < 40) {
       console.log("No meaningful text was found");
       const error = new Error("No meaningful text was found in image!");
       error.code = 402;
