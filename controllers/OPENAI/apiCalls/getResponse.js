@@ -36,7 +36,7 @@ export const getResponse = async (prompt, prevMessages) => {
 const promptOpenAI = async (model, prevMessages, prompt) => {
   // Create a request object with the model, prompt, and other parameters
   console.log("here i became");
-  console.log(prevMessages.length());
+  console.log(prevMessages.length);
   const request = {
     model: model,
     messages: [
