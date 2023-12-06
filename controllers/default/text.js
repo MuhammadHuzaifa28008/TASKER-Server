@@ -13,8 +13,10 @@ const handleTextPrompt = async (req, res) => {
     const { prompt, prevMessages: prevMessagesFromClient } = req.body;
 
     // Ensure prevMessages is an array
-    const prevMessages = Array.isArray(prevMessagesFromClient) ? prevMessagesFromClient : [];
-    // console.log("Prev Messages:", prevMessages);
+    const prevMessages = Array.isArray(prevMessagesFromClient)
+      ? prevMessagesFromClient
+      : [];
+    console.log("Prev Messages:", prevMessages);
 
     // Call the external function to get the response
     const response = await getResponse(prompt, prevMessages);
@@ -25,8 +27,10 @@ const handleTextPrompt = async (req, res) => {
     console.error("Error:", error.message);
 
     // Handle the error gracefully
-    const statusCode = error.code && error.code >= 400 && error.code < 500 ? error.code : 500;
-    const errorMessage = statusCode === 500 ? "Internal Server Error" : error.message;
+    const statusCode =
+      error.code && error.code >= 400 && error.code < 500 ? error.code : 500;
+    const errorMessage =
+      statusCode === 500 ? "Internal Server Error" : error.message;
 
     return res.status(statusCode).json({ error: errorMessage });
   }
