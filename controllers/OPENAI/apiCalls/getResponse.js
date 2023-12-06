@@ -35,7 +35,8 @@ export const getResponse = async (prompt, prevMessages) => {
 
 const promptOpenAI = async (model, prevMessages, prompt) => {
   // Create a request object with the model, prompt, and other parameters
-  // console.log("here i became");
+  console.log("here i became");
+  console.log(prevMessages.length());
   const request = {
     model: model,
     messages: [
@@ -45,7 +46,7 @@ const promptOpenAI = async (model, prevMessages, prompt) => {
           "Develop chracter of a student-centric ChatBot within 'TASKER,' an educational application, leveraging the advanced capabilities of 'GPT-4 Turbo' LLM from OPENAI. Ensure the ChatBot exhibits a friendly demeanor while efficiently addressing student queries. Encourage user engagement by posing insightful questions in a discursive manner, guiding students to self-solve their inquiries. Prioritize clarity and straightforward communication to ensure a seamless understanding of information. The primary goal is to empower students by providing comprehensive assistance, emphasizing the importance of understanding key concepts before addressing specific queries.",
         // content: prompt,
       },
-      // ...prevMessages,
+      ...prevMessages,
       { role: "user", content: prompt },
     ],
     temperature: 0.005,
