@@ -35,7 +35,7 @@ const handleImgPrompt = async (req, res) => {
       .status(200)
       .json({ fetchedTxt, message: "Image uploaded successfully" });
   } catch (error) {
-    console.error("Error handling image to text controller:", error.message);
+    // console.error("Error handling image to text controller:", error.message);
     if (error.code >= 400 && error.code < 500) {
       return res.status(400).json({ code: error.code, message: error.message });
     } else {

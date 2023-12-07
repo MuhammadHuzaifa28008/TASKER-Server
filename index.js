@@ -11,6 +11,7 @@ import defaultRoutes from "./routes/default.js";
 import feedbackRoutes from "./routes/feedback.js";
 import deviceRoutes from "./routes/device.js";
 import analyticsRoutes from "./routes/analytics.js";
+import versionRoutes from "./routes/version.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/default", defaultRoutes);
 app.use("/feedback", feedbackRoutes);
 app.use("/device", deviceRoutes);
 app.use("/analytics", analyticsRoutes);
+app.use("/version", versionRoutes);
 
 // Error Handling Middleware
 app.use(errorMiddleware);
@@ -46,7 +48,7 @@ try {
 }
 
 try {
-  app.listen(PORT, () => console.log(`server runing`));
+  app.listen(PORT, () => console.log(`server runing at ${PORT}`));
 } catch (err) {
   console.log("server connection err : " + err.message);
 }

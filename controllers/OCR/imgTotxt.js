@@ -1,5 +1,5 @@
 import { createWorker } from "tesseract.js";
-import fs from "fs/promises"; // Using fs.promises for asynchronous file operations
+//import fs from "fs/promises"; // Using fs.promises for asynchronous file operations
 // import Jimp from "jimp";
 
 export default async function fetchTextFromImage(base64Data) {
@@ -21,18 +21,18 @@ export default async function fetchTextFromImage(base64Data) {
     } = await worker.recognize(processedBuffer);
 
     // console.log(process.memoryUsage());
-    console.log(confidence);
-    if (confidence < 40) {
-      console.log("No meaningful text was found");
+    console.log(`confidence: ${confidence}`);
+    if (confidence < 10) {
+      // console.log("No meaningful text was found");
       const error = new Error("No meaningful text was found in image!");
       error.code = 402;
       throw error;
     } else {
-      console.log(`Confidence: ${confidence}`);
+      // console.log(`Confidence: ${confidence}`);
       return text;
     }
   } catch (error) {
-    console.error("Error during OCR:", error.message);
+    // console.error("Error during OCR:", error.message);
     throw error;
   } finally {
     await worker.terminate();
