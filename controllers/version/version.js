@@ -24,6 +24,7 @@ const getVersionFromJSON = async () => {
   try {
     const data = await readFile(versionFilePath, "utf-8");
     const { version } = JSON.parse(data);
+    // console.log(version);
     return version;
   } catch (error) {
     console.error("Error getting version:", error);
@@ -52,8 +53,9 @@ const handlePostVersion = async (req, res) => {
 const handleGetVersion = async (req, res) => {
   try {
     const version = await getVersionFromJSON();
-    if (version) return res.status(200).json({ version });
-    else return res.status(404).json({ message: "Version not found" });
+    if (version) return res.status(200).JSON({ version: version });
+
+    // else return res.status(404).json({ message: "Version not found" });
   } catch (error) {
     console.error("Error handling get version:", error);
     res.status(500).json({ message: "Internal server error" });
