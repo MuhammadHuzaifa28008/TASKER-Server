@@ -9,7 +9,6 @@ const handleAnalytics = async (req, res) => {
     const response = {
       devices: {
         length: devices.length,
-        data: devices,
       },
       feedbacks: {
         length: feedbacks.length,
@@ -31,7 +30,7 @@ const handleAnalytics = async (req, res) => {
 const getDevices = async () => {
   try {
     // Fetch all devices from the Device collection
-    const devices = await Device.find({}).select("id");
+    const devices = await Device.find({}, { _id: 0, id: 1 });
 
     // If no devices are found, return an empty array
     return devices || [];
@@ -44,7 +43,7 @@ const getDevices = async () => {
 const getFeedbacks = async () => {
   try {
     // Fetch all feedbacks from the Feedback collection
-    const feedbacks = await Feedback.find({}).select("feedback");
+    const feedbacks = await Feedback.find({}, { _id: 0, feedback: 1 });
 
     // If no feedbacks are found, return an empty array
     return feedbacks || [];
